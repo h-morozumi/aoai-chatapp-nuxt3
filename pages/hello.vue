@@ -17,12 +17,17 @@
         <p>Count: {{ counter }}</p>
         <div><button @click="counter++">+</button></div>
     </div>
+    <div>
+        でーた
+        <h2>{{ data }}</h2>
+    </div>
 </template>
 
 <script setup>
 const { count, inc, dec } = useCounter(100);
 const { $hello } = useNuxtApp();
 const counter = useCounter();
+const { data } = useFetch('/api/hello');
 
 function enableCustomLayout() {
   setPageLayout('custom');
