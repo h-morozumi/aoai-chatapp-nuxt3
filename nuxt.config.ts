@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
     css: ['/assets/css/style.css'],
     app: {
@@ -9,4 +10,18 @@ export default defineNuxtConfig({
         },
     },
     modules: ['@nuxtjs/tailwindcss'],
+    runtimeConfig: {
+      // public設定
+      public: {
+        foo: 'foo-setting',
+      },
+      // private設定
+      secret: 'my-secret-value',
+      db: {
+        user: 'mamezou',
+        password: 'super-secret'
+      },
+      aoaiurl: '',
+      aoaiapikey: ''
+    }
 })

@@ -13,4 +13,12 @@ definePageMeta({
   layout: false,
   middleware: 'auth',
 });
+
+const runtimeConfig = useRuntimeConfig();
+const env = process.server ? 'Server' : 'Client';
+console.log(`[${env}] public.foo: ${runtimeConfig.public.foo}`);
+console.log(`[${env}] secret: ${runtimeConfig.secret}`);
+console.log(`[${env}] db.user: ${runtimeConfig.db?.user}`);
+console.log(`[${env}] db.password: ${runtimeConfig.db?.password}`);
+const { data } = useFetch('/api/chatgpt');
 </script>
