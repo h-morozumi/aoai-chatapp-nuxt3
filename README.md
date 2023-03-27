@@ -19,6 +19,11 @@ pnpm install
 
 ## Development Server
 
+```
+export NUXT_AOAIURL="url"
+export NUXT_AOAIAPIKEY="key"
+```
+
 Start the development server on http://localhost:3000
 
 ```bash

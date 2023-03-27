@@ -18,8 +18,10 @@ const datas = {
 
 
 export default defineEventHandler(async (event) => {
-  // console.log('run...')
-//const body = await readBody(event);
+  console.log('run...')
+  const body = await readBody(event);
+  console.log(body)
+  console.log(body.message);
   //   console.log(url)
   //   console.log(apiKey)
     
