@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 export const useChatMsg = () => {
     // SystemMessage
-    const systemMessage: Ref<string> = useState('systemMessage', () => 'You are a helpful assistant.');
+    const systemMessage: Ref<string> = useState('systemMessage', () => 'あなたは親切なアシスタントです。');
     // SystemMessageの更新
     const updateSystemMsg = (systemMsg: Ref<string>) => (value: string) => {
         systemMessage.value = value;
