@@ -11,5 +11,8 @@
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.6.4",
     "nuxt": "^3.3.2"
+  },
+  "dependencies": {
+    "vue3-markdown-it": "^1.0.10"
   }
 }

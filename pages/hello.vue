@@ -21,6 +21,9 @@
         でーた
         <h2>{{ data }}</h2>
     </div>
+    <div>
+        <Hello message1="hoge" message2="fuge" message3="hage" />
+    </div>
 </template>
 
 <script setup>

@@ -31,32 +31,30 @@
           <div class="container px-5 py-24 mx-auto">
             <div class="-my-8 divide-y-2 divide-gray-100">
 
-              <!-- User Template -->
-              <div class="py-8 flex flex-wrap md:flex-nowrap bg-white">
-                <div class="md:w-40 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-                  <span class="font-semibold title-font text-gray-700">You</span>
-                </div>
-                <div class="md:flex-grow">
-                  <p class="leading-relaxed">
-                    Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer.
-                  </p>
-                </div>
-              </div>
-
-              <!-- System Template -->
-              <div class="py-8 flex flex-wrap md:flex-nowrap bg-white">
-                <div class="md:w-40 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-                  <span class="font-semibold title-font text-gray-700">ChatGPT</span>
-                  <div class="mt-1 text-gray-500 text-xs">completion_tokens:62</div>
-                  <div class="mt-1 text-gray-500 text-xs">prompt_tokens:71</div>
-                  <div class="mt-1 text-gray-500 text-xs">total_tokens:133</div>
-                </div>
-                <div class="md:flex-grow">
-                  <p class="leading-relaxed">
-                    Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer.
-                  </p>
-                </div>
-              </div>
+              <UserMsg userMessage="MSG1 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer." />
+              <SystemMsg 
+                systemMessage="MSG1 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer.\n ``` \n printf(hoge); \n ``` \n"
+                :completionTokens=62
+                :promptTokens=71
+                :totalTokens=1331 />
+              <UserMsg userMessage="MSG2 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer." />
+              <SystemMsg 
+                systemMessage="MSG2 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer.\n ``` \n printf(hoge); \n ``` \n"
+                :completionTokens=162
+                :promptTokens=171
+                :totalTokens=11331 />
+              <UserMsg userMessage="MSG3 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer." />
+              <SystemMsg 
+                systemMessage="MSG3 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer.\n ``` \n printf(hoge); \n ``` \n"
+                :completionTokens=262
+                :promptTokens=271
+                :totalTokens=21331 />
+              <UserMsg userMessage="MSG4 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer." />
+              <SystemMsg 
+                :systemMessage="content"
+                :completionTokens=362
+                :promptTokens=371
+                :totalTokens=31331 />
             </div>
           </div>
         </section>
@@ -81,10 +79,16 @@ const handleSave = () => {
     updateSystemMsg(assistant.value)
 }
 
+/**
+ * ChatGPT にメッセージを送信
+ */
 const handleMessage = () => {
     console.log(`${assistant.value}`);
     console.log(`${keyword.value}`); 
 }
+
+// サンプルMarkdown
+const content = 'Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer.\n ``` \n printf("hoge"); \n ``` \n';
 
 </script>
 
