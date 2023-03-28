@@ -20,8 +20,9 @@ pnpm install
 ## Development Server
 
 ```
-export NUXT_AOAIURL="url"
-export NUXT_AOAIAPIKEY="key"
+export NUXT_AOA_IENDPOINT="endpoint"
+export NUXT_AOAI_DEPLOYNAME="resourcename"
+export NUXT_AOAI_APIKEY="apikey"
 ```
 
 Start the development server on http://localhost:3000

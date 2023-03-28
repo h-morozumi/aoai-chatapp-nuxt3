@@ -2,6 +2,10 @@
     <h1>About Page</h1>
     <p>Count:{{ counter }}</p>
     <div>
+      {{ data.model }}<br />
+      {{ data.choices[0] }}
+    </div>
+    <div>
       <img src="~/assets/vue.png" alt="Nuxt3 Icon" />
       <img src="/vue.png" alt="Nuxt3 Icon" />
     </div>
@@ -13,18 +17,32 @@ definePageMeta({
   layout: false,
   middleware: 'auth',
 });
+  console.log('★★スタート')
+  const {systemMessage,systemMsgJson,userMessage} = useChatMsg();
 
+  console.log(systemMessage.value)
+  console.log(systemMsgJson);
+  console.log(userMessage.value)
+  console.log('★★おわり')
+
+// 環境変数のテスト
 const runtimeConfig = useRuntimeConfig();
-const env = process.server ? 'Server' : 'Client';
-console.log(`[${env}] public.foo: ${runtimeConfig.public.foo}`);
-console.log(`[${env}] secret: ${runtimeConfig.secret}`);
-console.log(`[${env}] db.user: ${runtimeConfig.db?.user}`);
-console.log(`[${env}] db.password: ${runtimeConfig.db?.password}`);
+console.log(`aoai_endpoint: ${runtimeConfig.aoaiEndpoint}`);
+console.log(`aoai_resourcename: ${runtimeConfig.aoaiDeployname}`);
+console.log(`aoaia_pikey: ${runtimeConfig.aoaiApikey}`);
+
 const { data } = useFetch('/api/chatgpt',{
   method:'POST',
   body:{
-    'message': 'ほげほげ'
+    'systemMessage': 'You are an AI assistant that helps people find information.',
+    'userMessage' : [
+    {
+      "role": "user",
+      "content": "https://ja.wikipedia.org/wiki/ChatGPT　このサイトを要約してください。"
+    }
+  ]
   }
 });
-console.log(data)
+
+console.log(data);
 </script>
