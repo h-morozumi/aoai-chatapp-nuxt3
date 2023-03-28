@@ -44,5 +44,6 @@ const { data } = useFetch('/api/chatgpt',{
   }
 });
 
-console.log(data);
+console.log(data.value?.choices[0].message);
+
 </script>
