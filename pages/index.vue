@@ -30,10 +30,7 @@
               <div v-for="data in userMessage">
                 <UserMsg v-if="data.role === 'user'" :userMessage="data.content" />
                 <SystemMsg v-if="data.role === 'assistant'" 
-                  :systemMessage="data.content"
-                  :completionTokens=data.completionTokens
-                  :promptTokens=data.promptTokens
-                  :totalTokens=data.totalTokens />
+                  :systemMessage="data.content" />
               </div>
 
             </div>
@@ -53,33 +50,47 @@ const keyword = ref('');
 const userMessage =  useState('gptResponse',() => []);
 const list = ref(null);
 
-watch(userMessage, () => {
-  // データが変更されたら、自動的にスクロールする
-  console.log(list.value.scrollTop)
-  console.log(list.value.scrollHeight)
-  list.value.scrollTop = list.value.scrollHeight;
+watch(assistant, () => {
+  console.log('assistantが変更された');
+  console.log(assistant.value);
 });
+watch(keyword, () => {
+  console.log('keywordが変更された');
+  console.log(keyword.value);
+});
+watch(userMessage, () => {
+  console.log('userMessageが変更された');
+  console.log(userMessage.value);
+  // // データが変更されたら、自動的にスクロールする
+  // console.log(list.value.scrollTop)
+  // console.log(list.value.scrollHeight)
+  // list.value.scrollTop = list.value.scrollHeight;
+});
+
 
 /**
  * アシスタントの性格を保存
  */
 const handleSave = () => {
-    console.log('セーブが押された');
     const assistantMessage = `${assistant.value}`;
+    assistant.value = assistantMessage;
+    userMessage.value = [];
     console.log(`assistantMessage:${assistantMessage}`);
+    console.log(`userMessage:${userMessage.value}`);
 }
 
 /**
  * ChatGPT にメッセージを送信
  */
-const handleMessage = () => {
+const handleMessage = async () => {
 
     const assistantMessage = `${assistant.value}`;
     const inputMessage =`${keyword.value}`;
 
     userMessage.value.push({role:"user",content:inputMessage});
+    keyword.value = '';
 
-    const { data } = useFetch('/api/chatgpt',{
+    const { data } = await useFetch('/api/chatgpt',{
       method:'POST',
       body:{
         'systemMessage': assistantMessage,
@@ -87,40 +98,14 @@ const handleMessage = () => {
       }
     });
 
-    const ret = data.value?.choices[0].message
-    console.log(ret)
-    userMessage.value.push(ret)
+    const message = data.value.choices[0].message;
+    // TODO 別の場所に表示する
+    const usage = data.value.usage;
+    console.log(`usage:${usage}`);
 
-    // const cnt = Math.floor( Math.random() * 2 );
-    // if(cnt == 0){
-    //   userMessage.value.push({role:"user",content:content})
-    // }else {
-    //   userMessage.value.push({role:"assistant",content:content,completionTokens:123,promptTokens:456,totalTokens:789})
-    // }
-  //   console.log(list.value.scrollTop)
-  // console.log(list.value.scrollHeight)
-  // list.value.scrollTop = list.value.scrollHeight;
-  // console.log(list.value.scrollTop)
-  // console.log(list.value.scrollHeight)
+    userMessage.value.push(message)
+
 }
-
-// // サンプルMarkdown
-// const content = 'Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer.\n ``` \n printf("hoge"); \n ``` \n';
-// // const dummyData = [];
-// // dummyData.push({role:"user",content:content});
-// // dummyData.push({role:"assistant",content:content,completionTokens:123,promptTokens:456,totalTokens:789});
-// // dummyData.push({role:"user",content:content});
-// // dummyData.push({role:"assistant",content:content,completionTokens:1234,promptTokens:4565,totalTokens:7896});
-// // const userMessage =  [];
-// // userMessage.push({role:"user",content:content+'aaa'})
-// // userMessage.push({role:"assistant",content:content,completionTokens:123,promptTokens:456,totalTokens:789})
-
-// //   addUserMsg({role:"user",content:content+'aaa'});
-// //   addUserMsg({role:"assistant",content:content,completionTokens:123,promptTokens:456,totalTokens:789});
-// //   addUserMsg({role:"user",content:content});
-// //   addUserMsg({role:"assistant",content:content,completionTokens:1234,promptTokens:4565,totalTokens:7896});
-
-// // console.log(userMessage.value)
 
 </script>
 
