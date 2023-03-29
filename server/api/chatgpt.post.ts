@@ -29,9 +29,7 @@ const debugLog = (message: string, data?: unknown) => {
  */
 export default defineEventHandler(async (event) => {
   // リクエストボディから必要な情報を取得
-  const body = await readBody(event);
-  const systemMessage:string = body.systemMessage;
-  const userMessage:Message[] = body.userMessage;
+  const {systemMessage,userMessage} = await readBody(event);
 
   // パラメータバリデーション
   if (!Array.isArray(userMessage)) {

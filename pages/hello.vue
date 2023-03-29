@@ -1,5 +1,6 @@
 <template>
     <h1>Hello Page</h1>
+    <NuxtLink to="/">戻る</NuxtLink> |
     <div>
         <button @click="enableCustomLayout">Update layout</button>
     </div>

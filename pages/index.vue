@@ -1,5 +1,5 @@
 <template>
-
+<NuxtLink to="/hello">Hello</NuxtLink> |
 <div>
   <div class="flex flex-row max-h-screen">
     <div class="basis-1/2 m-5">
@@ -12,10 +12,6 @@
           <textarea id="assistant" name="assistant" v-model="assistant" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-40 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
           <button @click="handleSave" class="text-white bg-indigo-500 border-0 py-2 px-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">保存</button>
         </div>
-        <!-- <div class="relative mb-4">
-          <label for="email" class="leading-7 text-sm text-gray-600">Email</label>
-          <input type="email" id="email" name="email" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-        </div> -->
         <div class="relative mb-4">
           <label for="keyword" class="leading-7 text-lg text-gray-600">Message</label>
           <textarea id="keyword" name="keyword" v-model="keyword" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-40 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
@@ -28,33 +24,18 @@
     <div class="basis-1/2 m-5 overflow-scroll bg-slate-50">
       <div>
         <section class="text-gray-600 body-font">
-          <div class="container px-5 py-24 mx-auto">
+          <div  ref="list" class="container px-5 py-24 mx-auto">
             <div class="-my-8 divide-y-2 divide-gray-100">
 
-              <UserMsg userMessage="MSG1 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer." />
-              <SystemMsg 
-                systemMessage="MSG1 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer.\n ``` \n printf(hoge); \n ``` \n"
-                :completionTokens=62
-                :promptTokens=71
-                :totalTokens=1331 />
-              <UserMsg userMessage="MSG2 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer." />
-              <SystemMsg 
-                systemMessage="MSG2 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer.\n ``` \n printf(hoge); \n ``` \n"
-                :completionTokens=162
-                :promptTokens=171
-                :totalTokens=11331 />
-              <UserMsg userMessage="MSG3 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer." />
-              <SystemMsg 
-                systemMessage="MSG3 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer.\n ``` \n printf(hoge); \n ``` \n"
-                :completionTokens=262
-                :promptTokens=271
-                :totalTokens=21331 />
-              <UserMsg userMessage="MSG4 : Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer." />
-              <SystemMsg 
-                :systemMessage="content"
-                :completionTokens=362
-                :promptTokens=371
-                :totalTokens=31331 />
+              <div v-for="data in userMessage">
+                <UserMsg v-if="data.role === 'user'" :userMessage="data.content" />
+                <SystemMsg v-if="data.role === 'assistant'" 
+                  :systemMessage="data.content"
+                  :completionTokens=data.completionTokens
+                  :promptTokens=data.promptTokens
+                  :totalTokens=data.totalTokens />
+              </div>
+
             </div>
           </div>
         </section>
@@ -63,32 +44,83 @@
   </div>
 </div>
 
-
 </template>
     
 <script setup>
 
-const { systemMessage, updateSystemMsg } = useChatMsg();
-const assistant = ref(systemMessage.value);
+const assistant = useState('assistantMsg',() => 'あなたは親切なアシスタントです。');
 const keyword = ref('');
+const userMessage =  useState('gptResponse',() => []);
+const list = ref(null);
+
+watch(userMessage, () => {
+  // データが変更されたら、自動的にスクロールする
+  console.log(list.value.scrollTop)
+  console.log(list.value.scrollHeight)
+  list.value.scrollTop = list.value.scrollHeight;
+});
 
 /**
  * アシスタントの性格を保存
  */
 const handleSave = () => {
-    updateSystemMsg(assistant.value)
+    console.log('セーブが押された');
+    const assistantMessage = `${assistant.value}`;
+    console.log(`assistantMessage:${assistantMessage}`);
 }
 
 /**
  * ChatGPT にメッセージを送信
  */
 const handleMessage = () => {
-    console.log(`${assistant.value}`);
-    console.log(`${keyword.value}`); 
+
+    const assistantMessage = `${assistant.value}`;
+    const inputMessage =`${keyword.value}`;
+
+    userMessage.value.push({role:"user",content:inputMessage});
+
+    const { data } = useFetch('/api/chatgpt',{
+      method:'POST',
+      body:{
+        'systemMessage': assistantMessage,
+        'userMessage' : userMessage,
+      }
+    });
+
+    const ret = data.value?.choices[0].message
+    console.log(ret)
+    userMessage.value.push(ret)
+
+    // const cnt = Math.floor( Math.random() * 2 );
+    // if(cnt == 0){
+    //   userMessage.value.push({role:"user",content:content})
+    // }else {
+    //   userMessage.value.push({role:"assistant",content:content,completionTokens:123,promptTokens:456,totalTokens:789})
+    // }
+  //   console.log(list.value.scrollTop)
+  // console.log(list.value.scrollHeight)
+  // list.value.scrollTop = list.value.scrollHeight;
+  // console.log(list.value.scrollTop)
+  // console.log(list.value.scrollHeight)
 }
 
-// サンプルMarkdown
-const content = 'Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer.\n ``` \n printf("hoge"); \n ``` \n';
+// // サンプルMarkdown
+// const content = 'Glossier echo park pug, church-key sartorial biodiesel vexillologist pop-up snackwave ramps cornhole. Marfa 3 wolf moon party messenger bag selfies, poke vaporware kombucha lumbersexual pork belly polaroid hoodie portland craft beer.\n ``` \n printf("hoge"); \n ``` \n';
+// // const dummyData = [];
+// // dummyData.push({role:"user",content:content});
+// // dummyData.push({role:"assistant",content:content,completionTokens:123,promptTokens:456,totalTokens:789});
+// // dummyData.push({role:"user",content:content});
+// // dummyData.push({role:"assistant",content:content,completionTokens:1234,promptTokens:4565,totalTokens:7896});
+// // const userMessage =  [];
+// // userMessage.push({role:"user",content:content+'aaa'})
+// // userMessage.push({role:"assistant",content:content,completionTokens:123,promptTokens:456,totalTokens:789})
+
+// //   addUserMsg({role:"user",content:content+'aaa'});
+// //   addUserMsg({role:"assistant",content:content,completionTokens:123,promptTokens:456,totalTokens:789});
+// //   addUserMsg({role:"user",content:content});
+// //   addUserMsg({role:"assistant",content:content,completionTokens:1234,promptTokens:4565,totalTokens:7896});
+
+// // console.log(userMessage.value)
 
 </script>
 

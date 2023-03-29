@@ -7,7 +7,8 @@ export const useChatMsg = () => {
         systemMessage.value = value;
     };
     const userMessage : Ref<Message[]> = useState('userMessage', () => []);
-    const addUserMsg = (userMessage: Ref<Message[]>) => (value: Message) => {
+    const addUserMsg = (userMsg: Ref<Message[]>) => (value: Message) => {
+        console.log('★')
         userMessage.value.push(value);
     }
     const clearUserMsg = (userMessage: Ref<Message[]>) => () => {
@@ -30,4 +31,7 @@ export const useChatMsg = () => {
 type  Message = {
     role: string;
     content: string;
+    completionTokens: number;
+    promptTokens: number;
+    totalTokens: number;
 }
