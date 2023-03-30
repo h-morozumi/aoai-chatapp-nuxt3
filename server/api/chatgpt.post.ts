@@ -43,8 +43,12 @@ export default defineEventHandler(async (event) => {
     { role: 'system', content: systemMessage },
     ...userMessage,
   ];
+  const data  = {
+    messages: messages,
 
-  debugLog('送信予定メッセージの内容', JSON.stringify(messages,undefined,4));
+  }
+
+  debugLog('送信予定メッセージの内容', JSON.stringify(data,undefined,4));
 
   try {
     const response = await $fetch(baseUrl,{
@@ -53,13 +57,12 @@ export default defineEventHandler(async (event) => {
         { 'Content-Type': 'application/json', 'api-key': apiKey },
         {}
       ),
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify(data),
     });
 
     // Debug log
-    debugLog('取得データ', JSON.stringify(response,undefined,4));
+    debugLog('取得データ', JSON.stringify( response ,undefined,4));
 
-    //そのまま返す
     return response;
     
   } catch (e) {

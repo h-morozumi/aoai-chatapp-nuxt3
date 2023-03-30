@@ -89,20 +89,27 @@ const handleMessage = async () => {
     userMessage.value.push({role:"user",content:inputMessage});
     keyword.value = '';
 
-    const { data } = await useFetch('/api/chatgpt',{
+    const { data,pending, error } = await useFetch('/api/chatgpt',{
       method:'POST',
       body:{
-        'systemMessage': assistantMessage,
-        'userMessage' : userMessage,
-      }
+          'systemMessage': assistantMessage,
+          'userMessage' : userMessage,
+        }
     });
 
-    const message = data.value.choices[0].message;
-    // TODO 別の場所に表示する
-    const usage = JSON.stringify(data.value.usage);
-    console.log(`usage:${usage}`);
-
-    userMessage.value.push(message)
+    if(error.value) {
+      console.log('error');
+      console.log(error);
+      console.log(pending);
+      return;
+    } else{
+      const message = data.value.choices[0].message;
+      userMessage.value.push(message)
+      // // TODO 別の場所に表示する
+      // const usage = JSON.stringify(data.value.usage);
+      // console.log(`usage:${usage}`);
+    }
+   
 }
 
 </script>
