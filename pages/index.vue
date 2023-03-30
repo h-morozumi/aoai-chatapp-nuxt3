@@ -1,5 +1,4 @@
 <template>
-<NuxtLink to="/hello">Hello</NuxtLink> |
 <div>
   <div class="flex flex-row max-h-screen">
     <div class="basis-1/2 m-5">
@@ -100,11 +99,10 @@ const handleMessage = async () => {
 
     const message = data.value.choices[0].message;
     // TODO 別の場所に表示する
-    const usage = data.value.usage;
+    const usage = JSON.stringify(data.value.usage);
     console.log(`usage:${usage}`);
 
     userMessage.value.push(message)
-
 }
 
 </script>
