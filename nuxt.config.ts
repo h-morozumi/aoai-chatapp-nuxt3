@@ -8,7 +8,12 @@ export default defineNuxtConfig({
           link: [{ rel: 'icon', href: '/favicon.ico' }],
         },
     },
-    modules: ['@nuxtjs/tailwindcss'],
+    css: [
+      'vuetify/lib/styles/main.sass'
+    ],
+    build: {
+      transpile: ['vuetify']
+    },
     runtimeConfig: {
       // public設定
       public: {

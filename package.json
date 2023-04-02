@@ -9,8 +9,10 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^6.6.4",
-    "nuxt": "^3.3.2"
+    "@mdi/font": "^7.2.96",
+    "nuxt": "^3.3.2",
+    "sass": "^1.60.0",
+    "vuetify": "^3.1.4"
   },
   "dependencies": {
     "vue3-markdown-it": "^1.0.10"
