@@ -1,71 +1,51 @@
 <template>
-  <v-app>
-    <!-- ヘッダー -->
+  <v-app id="inspire">
     <v-app-bar
-      app
+      class="px-3"
+      color="white"
       flat
-      border
-      class="px-md-6"
+      density="compact"
     >
-      <v-app-bar-nav-icon
-        @click="switchNavigationDisplay"
-        class="mr-md-4"
-      />
+      <v-avatar
+        color="grey-darken-1"
+        size="32"
+      ></v-avatar>
 
-      <v-app-bar-title class="font-weight-bold">
-        Nuxt3 + Vuetify3 Example 🚀
-      </v-app-bar-title>
+      <v-spacer></v-spacer>
 
-      <v-spacer />
-
-      <v-icon icon="mdi-account" class="mr-1" />
-      <p class="font-weight-bold">demo.user</p>
-    </v-app-bar>
-    <!-- /ヘッダー -->
-
-    <!-- ナビゲーション -->
-    <v-navigation-drawer
-      v-model="isNavigationShown"
-      app
-      floating
-      class="px-6 py-4"
-    >
-      <v-list>
-        <v-list-item
-          v-for="item in $C.NAVIGATION_ITEMS"
-          active-color="primary"
-          :to="item.path"
-          class="py-3"
+      <v-tabs
+        centered
+        color="grey-darken-2"
+      >
+        <v-tab
+          v-for="link in links"
+          :key="link"
         >
-          <v-icon :icon="item.icon" class="mr-6" />
-          <v-list-item-title
-            class="font-weight-bold"
-            v-text="item.title"
-          />
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <!-- /ナビゲーション -->
+          {{ link }}
+        </v-tab>
+      </v-tabs>
+      <v-spacer></v-spacer>
 
-    <v-main>
-      <v-container class="pa-6 pa-md-9">
-        <slot />
-      </v-container>
+      <v-avatar
+        class="hidden-sm-and-down"
+        color="grey-darken-1"
+        size="32"
+      ></v-avatar>
+    </v-app-bar>
+
+    <v-main class="bg-grey-lighten-3">
+      <slot />
     </v-main>
   </v-app>
 </template>
-
-<script setup lang="ts">
-// ナビゲーションの表示・非表示を制御
-const isNavigationShown = useState('isNavigationShown', () => true)
-const switchNavigationDisplay = () => {
-  isNavigationShown.value = !isNavigationShown.value
-}
+<script setup>
+  const links = [
+    'Dashboard',
+    'Messages',
+    'Profile',
+    'Updates',
+  ]
 </script>
 
-<style scoped lang="scss">
-// .v-list-item がアクティブ時の背景色を消す方法が分からなかったので無理やり対応😭
-::v-deep(.v-list-item__overlay) {
-  display: none;
-}
+<style scoped>
 </style>

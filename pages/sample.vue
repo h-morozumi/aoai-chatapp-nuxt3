@@ -11,4 +11,9 @@
         </v-col>
       </v-row>
     </div>
-  </template>
+</template>
+<script setup>
+definePageMeta({
+  layout: 'custom',
+});
+</script>
