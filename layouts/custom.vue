@@ -35,7 +35,7 @@
           v-for="item in $C.NAVIGATION_ITEMS"
           active-color="primary"
           :to="item.path"
-          class="py-3"
+          class="py-4"
         >
           <v-icon :icon="item.icon" class="mr-6" />
           <v-list-item-title
