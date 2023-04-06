@@ -17,10 +17,16 @@ export default defineNuxtConfig({
     runtimeConfig: {
       // public設定
       public: {
+        maxTokens : 800,
+        temperature : 0.8,
+        topP : 0.95,
+        frequencyPenalty : 0,
+        presencePenalty : 0,
       },
       // private設定
       aoaiEndpoint: '',
       aoaiDeployname: '',
       aoaiApikey: '',
+      aoaiApiVersion: '2023-03-15-preview',
     }
 })
