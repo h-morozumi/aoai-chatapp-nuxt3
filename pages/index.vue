@@ -49,6 +49,20 @@
               </v-slider>
             </div>
             <div>
+              <div class="text-caption">Past messages included</div>
+              <v-slider
+                v-model="n"
+                :min="1"
+                :max="20"
+                step="1"
+                thumb-label
+                class="w-10/12">
+                <template v-slot:append>
+                  <p class="text-overline"> {{ n }} </p>
+                </template>
+              </v-slider>
+            </div>
+            <div>
               <div class="text-caption">Top P(Top probabilities)</div>
               <v-slider
                 v-model="topP"
@@ -275,6 +289,7 @@ const send_onClick = async (event) => {
 const maxTokens = ref(800);
 const temperature = ref(0.8);
 const topP = ref(0.95);
+const n = ref(10);
 const frequencyPenalty = ref(0);
 const presencePenalty = ref(0);
 </script>
